@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
   CheckCircle,
-  ChevronRight,
   Globe,
   Lock,
   MessageSquare,
@@ -16,6 +15,8 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { HeroSection } from "@/components/sections/hero-section";
+import { WhyChooseUsSection } from "@/components/sections/why-choose-us-section";
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -68,6 +69,11 @@ export default function Page() {
           <div className="flex items-center gap-4">
             <ThemeSwitcher />
             <div className="hidden md:flex items-center gap-4">
+              <Link href="/video-demo">
+                <Button variant="ghost" size="sm">
+                  Video Demo
+                </Button>
+              </Link>
               <Link href="/auth/login">
                 <Button variant="ghost" size="sm">
                   Log in
@@ -128,6 +134,15 @@ export default function Page() {
                 </Link>
               </nav>
               <div className="flex flex-col gap-2 pt-4 border-t">
+                <Link href="/video-demo">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start"
+                  >
+                    Video Demo
+                  </Button>
+                </Link>
                 <Link href="/auth/login">
                   <Button
                     variant="ghost"
@@ -149,82 +164,29 @@ export default function Page() {
       </header>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/30">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-              <motion.div
-                className="flex flex-col justify-center space-y-4"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm mb-6 w-fit">
-                  <span className="font-medium">New Features Available</span>
-                </div>
-                <h1 className="text-3xl md:text-5xl font-bold tracking-tighter">
-                  Build Intelligent AI Agents for Your Business
-                </h1>
-                <p className="text-muted-foreground md:text-xl">
-                  SynapseAI platform empowers you to create, deploy, and manage
-                  AI agents that transform your business operations.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                  <Button size="lg" className="group">
-                    Get Started Free
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    Book a Demo
-                  </Button>
-                </div>
-                <div className="flex items-center gap-4 pt-4">
-                  <div className="flex -space-x-2">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div
-                        key={i}
-                        className="h-8 w-8 rounded-full border-2 border-background bg-muted overflow-hidden"
-                      >
-                        <img
-                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user${i}`}
-                          alt={`User ${i}`}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium">500+</span> companies already
-                    onboard
-                  </div>
-                </div>
-              </motion.div>
-              <motion.div
-                className="relative mx-auto w-full max-w-[500px] aspect-video"
-                initial="hidden"
-                animate="visible"
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary to-primary-foreground/20 blur-3xl opacity-20" />
-                <div className="relative rounded-xl border bg-card p-1 shadow-xl">
-                  <div className="rounded-lg bg-muted aspect-video overflow-hidden">
-                    <img
-                      src="/dashboard-preview.png"
-                      alt="Platform Dashboard"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.src =
-                          "https://placehold.co/600x400/2563eb/ffffff?text=SynapseAI+Dashboard";
-                      }}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        {/* Enhanced Hero Section with Video */}
+        <HeroSection
+          title="Build Intelligent AI Agents for Your Business"
+          subtitle="New Features Available"
+          description="SynapseAI platform empowers you to create, deploy, and manage AI agents that transform your business operations."
+          primaryButtonText="Get Started Free"
+          secondaryButtonText="Book a Demo"
+          videoSrc={[
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            "/hero-video.mp4"
+          ]}
+          videoPoster="/hero-poster.jpg"
+          showVideoPlayer={true}
+          backgroundVideo={false}
+          onPrimaryClick={() => {
+            // Handle primary button click
+            console.log("Get Started Free clicked");
+          }}
+          onSecondaryClick={() => {
+            // Handle secondary button click
+            console.log("Book a Demo clicked");
+          }}
+        />
 
         {/* Trusted By Section */}
         <section className="py-12 border-y bg-muted/30">
@@ -323,95 +285,23 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Why Choose Us Section */}
-        <section id="why-us" className="py-20 md:py-32 bg-muted/30">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-12 lg:grid-cols-2 items-center">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ duration: 0.5 }}
-                className="relative rounded-xl border bg-card shadow-xl overflow-hidden"
-              >
-                <div className="aspect-video">
-                  <img
-                    src="/why-choose-us.png"
-                    alt="Platform Benefits"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src =
-                        "https://placehold.co/600x400/2563eb/ffffff?text=Why+Choose+SynapseAI";
-                    }}
-                  />
-                </div>
-              </motion.div>
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex flex-col space-y-8"
-              >
-                <div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-                    Why Choose SynapseAI
-                  </h2>
-                  <p className="mt-4 text-muted-foreground">
-                    We deliver exceptional value through our cutting-edge AI
-                    platform designed specifically for enterprise needs.
-                  </p>
-                </div>
-
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Unmatched Performance",
-                      description:
-                        "Our AI agents deliver 99.9% accuracy and process requests 10x faster than competitors.",
-                    },
-                    {
-                      title: "Dedicated Support",
-                      description:
-                        "24/7 expert support with dedicated customer success managers for enterprise clients.",
-                    },
-                    {
-                      title: "Continuous Innovation",
-                      description:
-                        "Weekly updates with new features and improvements based on customer feedback.",
-                    },
-                    {
-                      title: "Scalable Infrastructure",
-                      description:
-                        "Built to handle millions of operations per second with 99.99% uptime guarantee.",
-                    },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start">
-                      <div className="mr-4 mt-1">
-                        <CheckCircle className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-bold">{item.title}</h3>
-                        <p className="text-muted-foreground">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div>
-                  <Button size="lg" className="group">
-                    Learn More
-                    <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
+        {/* Enhanced Why Choose Us Section with Video */}
+        <WhyChooseUsSection
+          title="Why Choose SynapseAI"
+          description="We deliver exceptional value through our cutting-edge AI platform designed specifically for enterprise needs."
+          buttonText="Learn More"
+          videoSrc={[
+            "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+            "/why-choose-us-video.mp4"
+          ]}
+          videoPoster="/why-choose-us-poster.jpg"
+          showVideoPlayer={true}
+          backgroundVideo={false}
+          onButtonClick={() => {
+            // Handle learn more button click
+            console.log("Learn More clicked");
+          }}
+        />
 
         {/* Testimonials Section */}
         <section id="testimonials" className="py-20 md:py-32">
