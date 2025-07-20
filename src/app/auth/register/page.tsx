@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowLeft, Check } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -20,14 +20,19 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [formData, setFormData] = React.useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
-    rememberMe: false,
+    confirmPassword: "",
+    agreeToTerms: false,
+    subscribeNewsletter: false,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,29 +40,33 @@ export default function LoginPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prev) => ({ ...prev, rememberMe: checked }));
+  const handleCheckboxChange = (name: string) => (checked: boolean) => {
+    setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
     setIsLoading(true);
 
-    // Simulate authentication delay
+    // Simulate registration delay
     setTimeout(() => {
       setIsLoading(false);
-      // Redirect to dashboard on successful login
+      // Redirect to dashboard on successful registration
       router.push("/dashboard");
-    }, 1500);
+    }, 2000);
   };
 
-  const handleSSOLogin = (provider: string) => {
+  const handleSSORegister = (provider: string) => {
     setIsLoading(true);
 
-    // Simulate SSO authentication delay
+    // Simulate SSO registration delay
     setTimeout(() => {
       setIsLoading(false);
-      // Redirect to dashboard on successful SSO login
+      // Redirect to dashboard on successful SSO registration
       router.push("/dashboard");
     }, 1500);
   };
@@ -103,38 +112,44 @@ export default function LoginPage() {
             </div>
 
             <h1 className="text-4xl font-bold mb-6 leading-tight">
-              Welcome back to the future of AI
+              Start your AI journey today
             </h1>
 
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              Sign in to continue building intelligent AI agents that transform
-              your business operations.
+              Join thousands of companies already using SynapseAI to build
+              intelligent agents and transform their operations.
             </p>
 
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary">
+                  <Check className="h-3 w-3 text-primary-foreground" />
+                </div>
                 <span className="text-sm text-muted-foreground">
-                  Enterprise-grade security
+                  Free 14-day trial
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary">
+                  <Check className="h-3 w-3 text-primary-foreground" />
+                </div>
                 <span className="text-sm text-muted-foreground">
-                  99.9% uptime guarantee
+                  No credit card required
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary">
+                  <Check className="h-3 w-3 text-primary-foreground" />
+                </div>
                 <span className="text-sm text-muted-foreground">
-                  24/7 expert support
+                  Cancel anytime
                 </span>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Right Column - Login Form */}
+        {/* Right Column - Register Form */}
         <motion.div
           className="flex items-center justify-center p-6 lg:p-12"
           initial="hidden"
@@ -151,18 +166,56 @@ export default function LoginPage() {
                 </div>
                 <span className="font-bold text-xl">SynapseAI</span>
               </div>
-              <p className="text-muted-foreground">Sign in to your account</p>
+              <p className="text-muted-foreground">Create your account</p>
             </div>
 
             <Card className="border-0 shadow-2xl">
               <CardHeader className="text-center pb-6">
-                <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+                <CardTitle className="text-2xl font-bold">
+                  Create Account
+                </CardTitle>
                 <CardDescription className="text-base">
-                  Enter your credentials to access your account
+                  Get started with your free SynapseAI account
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="firstName"
+                        className="text-sm font-medium"
+                      >
+                        First Name
+                      </Label>
+                      <Input
+                        id="firstName"
+                        name="firstName"
+                        type="text"
+                        placeholder="John"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        className="h-11"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="text-sm font-medium">
+                        Last Name
+                      </Label>
+                      <Input
+                        id="lastName"
+                        name="lastName"
+                        type="text"
+                        placeholder="Doe"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        className="h-11"
+                        required
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-medium">
                       Email Address
@@ -171,7 +224,7 @@ export default function LoginPage() {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="name@company.com"
+                      placeholder="john@company.com"
                       value={formData.email}
                       onChange={handleInputChange}
                       className="h-11"
@@ -188,7 +241,7 @@ export default function LoginPage() {
                         id="password"
                         name="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
+                        placeholder="Create a strong password"
                         value={formData.password}
                         onChange={handleInputChange}
                         className="h-11 pr-10"
@@ -208,40 +261,99 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="flex items-center space-x-2">
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="confirmPassword"
+                      className="text-sm font-medium"
+                    >
+                      Confirm Password
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="Confirm your password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        className="h-11 pr-10"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff size={18} />
+                        ) : (
+                          <Eye size={18} />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-start space-x-2">
                       <Checkbox
-                        id="remember"
-                        checked={formData.rememberMe}
-                        onCheckedChange={handleCheckboxChange}
+                        id="terms"
+                        checked={formData.agreeToTerms}
+                        onCheckedChange={handleCheckboxChange("agreeToTerms")}
+                        className="mt-0.5"
                       />
                       <Label
-                        htmlFor="remember"
-                        className="text-sm font-normal cursor-pointer"
+                        htmlFor="terms"
+                        className="text-sm font-normal cursor-pointer leading-relaxed"
                       >
-                        Remember me
+                        I agree to the{" "}
+                        <Link
+                          href="/terms"
+                          className="text-primary hover:text-primary/80 transition-colors"
+                        >
+                          Terms of Service
+                        </Link>{" "}
+                        and{" "}
+                        <Link
+                          href="/privacy"
+                          className="text-primary hover:text-primary/80 transition-colors"
+                        >
+                          Privacy Policy
+                        </Link>
                       </Label>
                     </div>
-                    <Link
-                      href="/auth/forgot-password"
-                      className="text-sm text-primary hover:text-primary/80 transition-colors"
-                    >
-                      Forgot password?
-                    </Link>
+
+                    <div className="flex items-start space-x-2">
+                      <Checkbox
+                        id="newsletter"
+                        checked={formData.subscribeNewsletter}
+                        onCheckedChange={handleCheckboxChange(
+                          "subscribeNewsletter",
+                        )}
+                        className="mt-0.5"
+                      />
+                      <Label
+                        htmlFor="newsletter"
+                        className="text-sm font-normal cursor-pointer leading-relaxed"
+                      >
+                        Subscribe to our newsletter for updates and tips
+                      </Label>
+                    </div>
                   </div>
 
                   <Button
                     type="submit"
                     className="w-full h-11 text-base font-medium"
-                    disabled={isLoading}
+                    disabled={isLoading || !formData.agreeToTerms}
                   >
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Signing in...
+                        Creating account...
                       </>
                     ) : (
-                      "Sign In"
+                      "Create Account"
                     )}
                   </Button>
                 </form>
@@ -252,7 +364,7 @@ export default function LoginPage() {
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
                     <span className="bg-card px-2 text-muted-foreground font-medium">
-                      Or continue with
+                      Or sign up with
                     </span>
                   </div>
                 </div>
@@ -261,7 +373,7 @@ export default function LoginPage() {
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() => handleSSOLogin("google")}
+                    onClick={() => handleSSORegister("google")}
                     disabled={isLoading}
                     className="h-11"
                   >
@@ -276,7 +388,7 @@ export default function LoginPage() {
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() => handleSSOLogin("microsoft")}
+                    onClick={() => handleSSORegister("microsoft")}
                     disabled={isLoading}
                     className="h-11"
                   >
@@ -291,12 +403,12 @@ export default function LoginPage() {
                 </div>
 
                 <div className="text-center text-sm text-muted-foreground">
-                  Don&apos;t have an account?{" "}
+                  Already have an account?{" "}
                   <Link
-                    href="/auth/register"
+                    href="/auth/login"
                     className="text-primary hover:text-primary/80 font-medium transition-colors"
                   >
-                    Create an account
+                    Sign in
                   </Link>
                 </div>
               </CardContent>
