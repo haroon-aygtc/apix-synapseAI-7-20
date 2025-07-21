@@ -74,6 +74,11 @@ export default function Page() {
                   Video Demo
                 </Button>
               </Link>
+              <Link href="/animated-video">
+                <Button variant="ghost" size="sm">
+                  Animated Studio
+                </Button>
+              </Link>
               <Link href="/auth/login">
                 <Button variant="ghost" size="sm">
                   Log in
@@ -141,6 +146,15 @@ export default function Page() {
                     className="w-full justify-start"
                   >
                     Video Demo
+                  </Button>
+                </Link>
+                <Link href="/animated-video">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start"
+                  >
+                    Animated Studio
                   </Button>
                 </Link>
                 <Link href="/auth/login">
